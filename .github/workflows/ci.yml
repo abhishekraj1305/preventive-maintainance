@@ -1,0 +1,47 @@
+name: Application checks
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: maintenance
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: maintenance_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://maintenance:ci-only-password@localhost:5432/maintenance_test
+      SECRET_KEY: ci-only-secret-key-for-disposable-tests-never-used-for-hosting
+      DEBUG: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check .
+      - run: python manage.py makemigrations --check --dry-run
+      - run: python manage.py collectstatic --noinput
+      - run: pytest
+      - run: python manage.py check --deploy --fail-level WARNING
+        env:
+          DEBUG: '0'
+      - run: python -m playwright install --with-deps chromium
+      - run: python scripts/browser_smoke.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-checks
+          path: artifacts/browser/
+          if-no-files-found: ignore

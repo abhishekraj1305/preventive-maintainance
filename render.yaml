@@ -1,0 +1,30 @@
+# PostgreSQL lives in Neon; no expiring Render Free PostgreSQL is provisioned.
+services:
+  - type: web
+    name: preventive-maintenance-demo
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: bash scripts/build.sh
+    startCommand: bash scripts/start.sh
+    healthCheckPath: /health/
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.14
+      - key: DEBUG
+        value: "0"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: DEMO_MODE
+        value: "1"
+      - key: SEED_DEMO
+        value: "1"
+      - key: BOOTSTRAP_ADMIN_USERNAME
+        value: admin
+      - key: BOOTSTRAP_ADMIN_PASSWORD
+        sync: false
+      - key: DEMO_PASSWORD
+        sync: false

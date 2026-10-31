@@ -1,0 +1,32 @@
+from django.urls import path
+from .views import accounts, dashboard, work, masters, reports
+
+urlpatterns = [
+    path("login/", accounts.AppLogin.as_view(), name="login"),
+    path("logout/", accounts.AppLogout.as_view(), name="logout"),
+    path("password/", accounts.password, name="password"),
+    path("", dashboard.dashboard, name="dashboard"),
+    path("status/", dashboard.status, name="status"),
+    path("machines/", dashboard.machines, name="machines"),
+    path("machines/<int:pk>/", dashboard.machine_detail, name="machine_detail"),
+    path("pm/", work.pm_list, name="pm_list"),
+    path("pm/<int:pk>/", work.pm_detail, name="pm_detail"),
+    path("approvals/", work.approvals, name="approvals"),
+    path("breakdowns/", work.breakdowns, name="breakdowns"),
+    path("breakdowns/new/", work.breakdown_new, name="breakdown_new"),
+    path("breakdowns/<int:pk>/", work.breakdown_detail, name="breakdown_detail"),
+    path("runtime/", work.runtime, name="runtime"),
+    path("runtime/new/", work.runtime_edit, name="runtime_new"),
+    path("runtime/<int:pk>/", work.runtime_edit, name="runtime_edit"),
+    path("notifications/", work.notifications, name="notifications"),
+    path("notifications/<int:pk>/read/", work.notification_read, name="notification_read"),
+    path("reports/", reports.reports, name="reports"),
+    path("reports/export/", reports.reports_export, name="reports_export"),
+    path("settings/", masters.settings_home, name="settings"),
+    path("settings/users/<int:pk>/reset/", masters.reset_password, name="reset_password"),
+    path("settings/<str:kind>/new/", masters.master_edit, name="master_new"),
+    path("settings/<str:kind>/<int:pk>/", masters.master_edit, name="master_edit"),
+    path("import/", reports.excel_import, name="excel_import"),
+    path("import/commit/", reports.excel_commit, name="excel_commit"),
+    path("import/template/", reports.excel_template, name="excel_template"),
+]
