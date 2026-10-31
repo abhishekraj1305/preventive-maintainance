@@ -2,6 +2,8 @@
 
 A working Django application for one organization with several plants. Staff use individual user IDs and passwords on phones or PCs. Updates, PM approvals, countdowns, notifications and reports stay inside the application.
 
+**Hosted demonstration:** [Open Upkeep](https://preventive-maintainance.onrender.com). Sign in with an administrator-issued account. The first visit after inactivity can take around a minute while free hosting starts. Initial credentials are delivered privately and are not included in this repository.
+
 ## Included
 
 - Admin configuration and account resets; plant-scoped Operator, Technician and Approver memberships.

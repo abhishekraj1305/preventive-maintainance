@@ -4,7 +4,7 @@ Use personal accounts for this demonstration. The user selected the public perso
 
 ## 1. PostgreSQL on Neon
 
-Create a Free project named `preventive-maintenance-demo`, using PostgreSQL 17 and an AWS region close to the Render service (Singapore where available). Keep the default database or create `maintenance`. Copy the **direct**, non-pooler PostgreSQL connection string with `sslmode=require` from Connect. Treat it as a secret. Direct connections support migrations and backup/restore without pooler restrictions; this demo uses only two web workers and closes connections after requests.
+Create a Free project named `preventive-maintainance`, using PostgreSQL 17 and an AWS region close to the Render service (Singapore where available). Keep the default database or create `maintenance`. Copy the **direct**, non-pooler PostgreSQL connection string with `sslmode=require` from Connect. Treat it as a secret. Direct connections support migrations and backup/restore without pooler restrictions; this demo uses only two web workers and closes connections after requests.
 
 ## 2. GitHub and Render
 
@@ -50,6 +50,23 @@ Startup applies migrations, initializes the first administrator if none exists, 
 4. Redeploy without changing `DATABASE_URL`; verify the saved incident, PM history and changed passwords persist.
 5. After an idle cold start, verify outstanding tasks are still present and reminders are not duplicated.
 6. Back up and restore a separate empty database following [backup-restore.md](backup-restore.md).
+
+## Current demonstration deployment
+
+The service was deployed on 31 October 2026 through the connected Render and Neon accounts. It is managed as a Render Web Service; `render.yaml` is a reproducible configuration, not an attached Blueprint.
+
+| Resource | Value |
+| --- | --- |
+| Live application | https://preventive-maintainance.onrender.com |
+| Render workspace | My Workspace |
+| Render service | `srv-dbins5ss728c73fr56u0` — Free, Singapore |
+| Neon project | `lively-thunder-49160658` — Free, AWS Singapore |
+| Neon branch | `production` (`br-long-haze-b32xiu5y`) |
+| Database | `maintenance`, PostgreSQL 17 |
+| HTTP health check | `/health/`, including a database query |
+| Automatic deploy | After CI checks pass on `main` |
+
+Initial seeding created two fictional plants, eight machines and seven accounts. `SEED_DEMO` is now `0`; initial account password environment values have been cleared. Runtime secrets remain in Render environment settings. The private local delivery file `artifacts/HOSTED-DEMO-ACCESS.txt` contains initial application credentials and is excluded from Git.
 
 ## Limits and troubleshooting
 

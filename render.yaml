@@ -1,7 +1,7 @@
 # PostgreSQL lives in Neon; no expiring Render Free PostgreSQL is provisioned.
 services:
   - type: web
-    name: preventive-maintenance-demo
+    name: preventive-maintainance
     runtime: python
     plan: free
     region: singapore
